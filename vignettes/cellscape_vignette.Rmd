@@ -28,23 +28,7 @@ example("cellscape")
 ```
 
 One of these, for example, is copy number data of a triple negative breast cancer patient published in Wang et al. (2014).
-```{r, echo=FALSE}
-library(devtools)  
-source("https://bioconductor.org/biocLite.R")
-biocLite("cellscape")
-library(cellscape) 
-# EXAMPLE 2 - COPY NUMBER DATA
-# single cell tree edges
-tree_edges <- read.csv(system.file("extdata", "cnv_tree_edges.csv", package = "cellscape"))
-# cnv segments data
-cnv_data <- read.csv(system.file("extdata", "cnv_data.csv", package = "cellscape"))
-# annotations
-sc_annot <- read.csv(system.file("extdata", "cnv_annots.tsv", package = "cellscape"), sep="\t")
-# custom clone colours
-clone_colours <- data.frame( clone_id = c("1","2","3"), colour = c("7fc97f", "beaed4", "fdc086"))
-# run cellscape
-cellscape(cnv_data=cnv_data, tree_edges=tree_edges, sc_annot=sc_annot, width=800, height=475, show_warnings=FALSE, clone_colours=clone_colours)
-```
+![Screen capture of CellScape for copy number data](cellscape_copynumber.png)
 
 # Required parameters
 
@@ -87,6 +71,10 @@ $sc\_annot$ (data frame) (Required for TimeScape) Annotations (genotype and samp
 If these two additional parameters are included, a TimeScape will be appended to the bottom of the view, like so:
 
 ```{r, echo=FALSE}
+library(devtools)  
+source("https://bioconductor.org/biocLite.R")
+biocLite("cellscape")
+library(cellscape) 
 #' # single cell tree edges
 tree_edges <- read.csv(system.file("extdata", "targeted_tree_edges.csv", package = "cellscape"))
 #' # targeted mutations
