@@ -98,6 +98,10 @@ The colours of each clone may be changed by the $clone\_colours$ parameter. This
 1. character() $clone\_id$ - the clone ids
 2. character() $colour$ - the corresponding Hex colour for each clone id.
 
+## Mutation order
+
+The order of targeted mutations in the heatmap may be specified by the $mut\_order$ vector. Each element in the vector describes a mutation by its chromosome and coordinate, and is formatted as such:  "\<chromosome\>:\<coordinate\>".
+
 ## Titles
 
 Many titles throughout the view can be changed by the following parameters:
