@@ -258,4 +258,3 @@ cellscape(cnv_data=cnv_data, tree_edges=tree_edges, sc_annot=sc_annot,
     width=800, height=475, show_warnings=FALSE, 
     clone_colours = clone_colours)
 }
-
