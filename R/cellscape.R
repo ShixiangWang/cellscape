@@ -57,7 +57,8 @@
 #'   
 #' @import htmlwidgets
 #'
-#' @param cnv_data \code{data.frame} (Required if mut_data not provided) 
+#' @param cnv_data \code{data.frame} 
+#'     (Required if not providing mut_data nor mut_data_matrix) 
 #'     Single cell copy number segments data. Note that every single cell id
 #'     must be present in the tree_edges data frame. Required columns are:
 #'     \describe{
@@ -73,7 +74,8 @@
 #'       \item{copy_number:}{\code{numeric()} copy number state.}
 #'
 #'     }
-#' @param mut_data \code{data.frame} (Required if cnv_data not provided) 
+#' @param mut_data \code{data.frame} 
+#'     (Required if not providing cnv_data nor mut_data_matrix) 
 #'     Single cell targeted mutation data frame. Note that every single cell id 
 #'     must be present in the tree_edges data frame. Required columns are:
 #'     \describe{
@@ -87,6 +89,15 @@
 #'       \item{VAF:}{\code{numeric()} variant allele frequency [0, 1].}
 #'
 #'     }
+#' @param mut_data_matrix \code{matrix} 
+#'     (Required if not providing cnv_data nor mut_data) 
+#'     Single cell targeted mutation matrix. Rows are single cell IDs, 
+#'     columns are mutations. Rows and columns must be named, column names 
+#'     in the format "<chromosome>:<coordinate>". 
+#'     Note that the order of these rows and columns will not be 
+#'     preserved, unless mutation order is the same as that specified in the 
+#'     mut_order parameter. Also note that every single cell id must be  
+#'     present in the tree_edges data frame. 
 #' @param mut_order \code{vector} (Optional) Mutation order for targeted 
 #'     mutation heatmap (each mutation should consist of a string in the 
 #'     form "chrom:coord"). Default will use a clustering function to 
@@ -228,6 +239,7 @@
 #'     clone_colours = clone_colours)
 cellscape <- function(cnv_data = NULL, 
                     mut_data = NULL, 
+                    mut_data_matrix = NULL, 
                     mut_order = NULL,
                     tree_edges, 
                     gtype_tree_edges = NULL,
@@ -249,16 +261,40 @@ cellscape <- function(cnv_data = NULL,
 
   # CHECK REQUIRED INPUTS ARE PRESENT 
 
-  if (is.null(cnv_data) && is.null(mut_data)) {
+  if (is.null(cnv_data) && is.null(mut_data) && is.null(mut_data_matrix)) {
     stop("User must provide either copy number data (parameter cnv_data)",
-      " or mutation data (parameter mut_data).")
+      " or mutation data (parameter mut_data or mut_data_matrix).")
   }
-  if (!is.null(cnv_data) && !is.null(mut_data)) {
+  if (!is.null(cnv_data) && (!is.null(mut_data) || !is.null(mut_data))) {
     stop("User can only provide copy number (parameter cnv_data) OR targeted mutations",
-      " data (parameter mut_data), not both.")
+      " data (parameter mut_data or mut_data_matrix), not both.")
   }
   if (missing(tree_edges)) {
     stop("User must provide tree edge data (parameter tree_edges).")
+  }
+
+  # IF mut_data_matrix provided, convert it into mut_data data frame
+  if (!missing(mut_data_matrix)) {
+    if (is.null(rownames(mut_data_matrix))) {
+      stop("mut_data_matrix must have row names.")
+    }
+    if (is.null(colnames(mut_data_matrix))) {
+      stop("mut_data_matrix must have column names.")
+    }
+    mut_data <- setNames(melt(mut_data_matrix), c('rows', 'vars', 'values'))
+    colnames(mut_data) <- c("single_cell_id", "mut", "VAF")
+    mut_data$chr <- sapply(mut_data$mut, function(mut) {
+        mut <- as.character(mut)
+        if (!grepl(":", mut)) {
+          stop("Mutation in mut_data_matrix row name is not in the correct format '<chromosome>:<coordinate>'.")
+        }
+        return (strsplit(mut, split=":")[[1]][1])
+    })
+    mut_data$coord <- sapply(mut_data$mut, function(mut) {
+        mut <- as.character(mut)
+        return (strsplit(mut, split=":")[[1]][2])
+    })
+    mut_data$mut <- NULL
   }
 
   # heatmap width (pixels)

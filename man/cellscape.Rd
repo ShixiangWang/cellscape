@@ -4,17 +4,18 @@
 \alias{cellscape}
 \title{CellScape}
 \usage{
-cellscape(cnv_data = NULL, mut_data = NULL, mut_order = NULL, tree_edges,
-  gtype_tree_edges = NULL, sc_annot = NULL, clone_colours = "NA",
-  timepoint_title = "Timepoint", clone_title = "Clone",
-  xaxis_title = "Time Point", yaxis_title = "Clonal Prevalence",
-  phylogeny_title = "Clonal Phylogeny", value_type = NULL,
-  node_type = "Cell", display_node_ids = FALSE,
+cellscape(cnv_data = NULL, mut_data = NULL, mut_data_matrix = NULL,
+  mut_order = NULL, tree_edges, gtype_tree_edges = NULL, sc_annot = NULL,
+  clone_colours = "NA", timepoint_title = "Timepoint",
+  clone_title = "Clone", xaxis_title = "Time Point",
+  yaxis_title = "Clonal Prevalence", phylogeny_title = "Clonal Phylogeny",
+  value_type = NULL, node_type = "Cell", display_node_ids = FALSE,
   prop_of_clone_threshold = 0.2, vaf_threshold = 0.05,
   show_warnings = TRUE, width = 900, height = 800)
 }
 \arguments{
-\item{cnv_data}{\code{data.frame} (Required if mut_data not provided) 
+\item{cnv_data}{\code{data.frame} 
+    (Required if not providing mut_data nor mut_data_matrix) 
     Single cell copy number segments data. Note that every single cell id
     must be present in the tree_edges data frame. Required columns are:
     \describe{
@@ -31,7 +32,8 @@ cellscape(cnv_data = NULL, mut_data = NULL, mut_order = NULL, tree_edges,
 
     }}
 
-\item{mut_data}{\code{data.frame} (Required if cnv_data not provided) 
+\item{mut_data}{\code{data.frame} 
+    (Required if not providing cnv_data nor mut_data_matrix) 
     Single cell targeted mutation data frame. Note that every single cell id 
     must be present in the tree_edges data frame. Required columns are:
     \describe{
@@ -45,6 +47,16 @@ cellscape(cnv_data = NULL, mut_data = NULL, mut_order = NULL, tree_edges,
       \item{VAF:}{\code{numeric()} variant allele frequency [0, 1].}
 
     }}
+
+\item{mut_data_matrix}{\code{matrix} 
+(Required if not providing cnv_data nor mut_data) 
+Single cell targeted mutation matrix. Rows are single cell IDs, 
+columns are mutations. Rows and columns must be named, column names 
+in the format "<chromosome>:<coordinate>". 
+Note that the order of these rows and columns will not be 
+preserved, unless mutation order is the same as that specified in the 
+mut_order parameter. Also note that every single cell id must be  
+present in the tree_edges data frame.}
 
 \item{mut_order}{\code{vector} (Optional) Mutation order for targeted 
 mutation heatmap (each mutation should consist of a string in the 

@@ -32,7 +32,7 @@ One of these, for example, is copy number data of a triple negative breast cance
 
 # Required parameters
 
-$cnv\_data$ (data frame) (Required if mut\_data not provided) Single cell copy number segments data. This data frame includes the following columns:
+$cnv\_data$ (data frame) (Required if not providing mut\_data nor mut\_data\_matrix) Single cell copy number segments data. This data frame includes the following columns:
 
 1. character() $single\_cell\_id$ - single cell id
 2. character() $chr$ - chromosome number
@@ -40,12 +40,14 @@ $cnv\_data$ (data frame) (Required if mut\_data not provided) Single cell copy n
 4. numeric() $end$ - end position
 5. numeric() $copy\_number$ - copy number state.
 
-$mut\_data$ (data frame) (Required if cnv\_data not provided) Single cell targeted mutation data frame. This data frame includes the following columns:
+$mut\_data$ (data frame) (Required if not providing cnv\_data nor mut\_data\_matrix) Single cell targeted mutation data frame. This data frame includes the following columns:
 
 1. character() $single\_cell\_id$ - single cell id
 2. character() $chr$ - chromosome number
 3. numeric() $coord$ - genomic coordinate
 4. numeric() $VAF$ - variant allele frequency [0, 1].
+
+$mut\_data\_matrix$ (matrix) (Required if not providing cnv_data nor mut_data) Single cell targeted mutation matrix. Rows are single cell IDs, columns are mutations. Rows and columns must be named, column names in the format "\<chromosome\>:\<coordinate\>". Note that the order of these rows and columns will not be preserved, unless mutation order is the same as that specified in the mut\_order parameter. Also note that every single cell id must be present in the tree\_edges data frame. 
 
 $tree\_edges$ (data frame) Edges for the single cell phylogenetic tree. This data frame includes the following columns:
 

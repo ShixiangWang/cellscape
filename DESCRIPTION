@@ -1,7 +1,7 @@
 Package: cellscape
 Title: Explores single cell copy number profiles in the context of a
         single cell tree
-Version: 0.99.5
+Version: 0.99.6
 Authors@R: person("Maia", "Smith", email = "maiaannesmith@gmail.com",
         role = c("aut", "cre"))
 Description: CellScape facilitates interactive browsing of single cell
