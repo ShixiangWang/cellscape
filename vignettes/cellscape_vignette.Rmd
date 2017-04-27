@@ -121,13 +121,14 @@ Interactive components:
 2. Mouseover any part of the heatmap to view the CNV or VAF value for that copy number segment or mutation site, respectively. 
 3. Mouseover any branch of the phylogeny to view downstream single cells, both in the phylogeny and heatmap. 
 4. Mouseover any clone to view its corresponding single cells in the phylogeny and heatmap.
-5. Click any node in the phylogeny to flip the order of its descendant branches. 
-6. Use the selection tool in the tool bar to select single cell genomic profiles and view their corresponding single cells in the phylogeny. 
-7. Use the tree trimming tool in the tool bar to remove any branch of the phylogeny by clicking it. 
+5. If present, use the scale tree/graph tool in the tool bar to scale the phylogeny by the provided edge distances. 
+6. Use the branch flip tool in the tool bar to click any node in the phylogeny to flip the order of its descendant branches.
+7. Use the re-root tool in the tool bar to click any node in order to re-root the tree using the clicked node as the new root.
 8. Use the switch view tool in the tool bar to change the phylogeny view from force-directed to unidirectional, and vice versa. 
-9. If present, use the scale tree/graph tool in the tool bar to scale the phylogeny by the provided edge distances. 
-10. If time-series information is present such that the TimeScape is displayed below the CellScape, clones and time points are interactively linked in both views on mouseover. 
-11. Click the download buttons to download a PNG or SVG of the view. 
+9. Use the tree trimming tool in the tool bar to remove any branch of the phylogeny by clicking it. 
+10. Use the selection tool in the tool bar to select single cell genomic profiles and view their corresponding single cells in the phylogeny. 
+11. If time-series information is present such that the TimeScape is displayed below the CellScape, clones and time points are interactively linked in both views on mouseover. 
+12. Click the download buttons to download a PNG or SVG of the view. 
 
 # Obtaining the data 
 
