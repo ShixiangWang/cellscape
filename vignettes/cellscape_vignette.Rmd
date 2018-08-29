@@ -15,8 +15,9 @@ To install CellScape, type the following commands in R:
 
 ```{r, eval=FALSE}
 # try http:// if https:// URLs are not supported
-source("https://bioconductor.org/biocLite.R")
-biocLite("cellscape")
+if (!requireNamespace("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+BiocManager::install("cellscape")
 ```
 
 # Examples 
@@ -74,8 +75,9 @@ If these two additional parameters are included, a TimeScape will be appended to
 
 ```{r, echo=FALSE}
 library(devtools)  
-source("https://bioconductor.org/biocLite.R")
-biocLite("cellscape")
+if (!requireNamespace("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+BiocManager::install("cellscape")
 library(cellscape) 
 #' # single cell tree edges
 tree_edges <- read.csv(system.file("extdata", "targeted_tree_edges.csv", package = "cellscape"))
