@@ -5,7 +5,7 @@
 
 [![](https://img.shields.io/badge/release%20version-1.22.0-green.svg)](https://www.bioconductor.org/packages/cellscape)
 [![download](http://www.bioconductor.org/shields/downloads/release/cellscape.svg)](https://bioconductor.org/packages/stats/bioc/cellscape)
-[![](https://img.shields.io/badge/download-123997/month-green.svg)](https://bioconductor.org/packages/stats/bioc/cellscape)
+[![R-CMD-check](https://github.com/ShixiangWang/cellscape/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ShixiangWang/cellscape/actions/workflows/R-CMD-check.yaml)
 
 CellScape is a visualization tool for integrating single cell phylogeny
 with genomic content to clearly display evolutionary progression and

@@ -18,8 +18,7 @@ library(badger)
 
 `r badge_bioc_release("cellscape", "green")`
 `r badge_bioc_download_rank("cellscape")`
-`r badge_bioc_download("cellscape", "month", "green")`
-
+[![R-CMD-check](https://github.com/ShixiangWang/cellscape/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ShixiangWang/cellscape/actions/workflows/R-CMD-check.yaml)
 
 CellScape is a visualization tool for integrating single cell phylogeny with genomic content to clearly display evolutionary progression and tumour heterogeneity. 
 
