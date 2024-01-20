@@ -1,23 +1,41 @@
 ---
-output: 
-  html_document: 
-    keep_md: yes
+output: github_document
 ---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+library(badger)
+```
+
+# CellScape
+
+`r badge_bioc_release("cellscape", "green")`
+`r badge_bioc_download_rank("cellscape")`
+`r badge_bioc_download("cellscape", "month", "green")`
+
 
 CellScape is a visualization tool for integrating single cell phylogeny with genomic content to clearly display evolutionary progression and tumour heterogeneity. 
 
-# Installation 
+## Installation 
 
 To install CellScape, type the following commands in R:
 
 ```{r, eval=FALSE}
 # try http:// if https:// URLs are not supported
-if (!requireNamespace("BiocManager", quietly=TRUE))
-    install.packages("BiocManager")
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+  install.packages("BiocManager")
+}
 BiocManager::install("cellscape")
 ```
 
-# Examples 
+## Examples 
 
 Run the examples by: 
 
@@ -25,7 +43,7 @@ Run the examples by:
 example("cellscape")
 ```
 
-# Documentation 
+## Documentation 
 
 To view the documentation for CellScape, type the following command in R:
 
@@ -36,9 +54,13 @@ To view the documentation for CellScape, type the following command in R:
 or:
 
 ```{r, eval=FALSE}
-browseVignettes("cellscape") 
+browseVignettes("cellscape")
 ```
 
-# References
+## Citation
 
-CellScape was developed at the Shah Lab for Computational Cancer Biology at the BC Cancer Research Centre.
+- [Smith, Maia A., et al. "E-scape: interactive visualization of single-cell phylogenetics and cancer evolution." ***Nature Methods*** 14.6 (2017): 549-550.](https://www.nature.com/articles/nmeth.4303)
+
+## Maintainer
+
+- [Shixiang Wang](https://github.com/ShixiangWang)

@@ -1,43 +1,57 @@
 
-CellScape is a visualization tool for integrating single cell phylogeny with genomic content to clearly display evolutionary progression and tumour heterogeneity. 
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Installation 
+# CellScape
+
+[![](https://img.shields.io/badge/release%20version-1.22.0-green.svg)](https://www.bioconductor.org/packages/cellscape)
+[![download](http://www.bioconductor.org/shields/downloads/release/cellscape.svg)](https://bioconductor.org/packages/stats/bioc/cellscape)
+[![](https://img.shields.io/badge/download-123997/month-green.svg)](https://bioconductor.org/packages/stats/bioc/cellscape)
+
+CellScape is a visualization tool for integrating single cell phylogeny
+with genomic content to clearly display evolutionary progression and
+tumour heterogeneity.
+
+## Installation
 
 To install CellScape, type the following commands in R:
 
-
-```r
+``` r
 # try http:// if https:// URLs are not supported
-if (!requireNamespace("BiocManager", quietly=TRUE))
-    install.packages("BiocManager")
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+  install.packages("BiocManager")
+}
 BiocManager::install("cellscape")
 ```
 
-# Examples 
+## Examples
 
-Run the examples by: 
+Run the examples by:
 
-
-```r
+``` r
 example("cellscape")
 ```
 
-# Documentation 
+## Documentation
 
-To view the documentation for CellScape, type the following command in R:
+To view the documentation for CellScape, type the following command in
+R:
 
-
-```r
+``` r
 ?cellscape
 ```
 
 or:
 
-
-```r
-browseVignettes("cellscape") 
+``` r
+browseVignettes("cellscape")
 ```
 
-# References
+## Citation
 
-CellScape was developed at the Shah Lab for Computational Cancer Biology at the BC Cancer Research Centre.
+- [Smith, Maia A., et al. “E-scape: interactive visualization of
+  single-cell phylogenetics and cancer evolution.” ***Nature Methods***
+  14.6 (2017): 549-550.](https://www.nature.com/articles/nmeth.4303)
+
+## Maintainer
+
+- [Shixiang Wang](https://github.com/ShixiangWang)
