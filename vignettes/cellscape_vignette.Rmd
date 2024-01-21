@@ -75,11 +75,6 @@ $sc\_annot$ (data frame) (Required for TimeScape) Annotations (genotype and samp
 If these two additional parameters are included, a TimeScape will be appended to the bottom of the view, like so:
 
 ```{r, echo=FALSE}
-library(devtools)
-if (!requireNamespace("BiocManager", quietly = TRUE)) {
-  install.packages("BiocManager")
-}
-BiocManager::install("cellscape")
 library(cellscape)
 #' # single cell tree edges
 tree_edges <- read.csv(system.file("extdata", "targeted_tree_edges.csv", package = "cellscape"))
