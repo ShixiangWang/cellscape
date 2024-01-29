@@ -1,7 +1,7 @@
 Package: cellscape
 Title: Explores single cell copy number profiles in the context of a
     single cell tree
-Version: 1.28.0
+Version: 1.27.1
 Authors@R: c(
     person("Shixiang", "Wang", , "w_shixiang@163.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-9855-7357")),
