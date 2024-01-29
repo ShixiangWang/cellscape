@@ -56,7 +56,9 @@
 #'
 #'
 #' @import htmlwidgets
-#'
+#' @importFrom stats coef dist hclust lm na.omit setNames
+#' @importFrom utils combn
+#' @importFrom reshape2 melt
 #' @param cnv_data \code{data.frame}
 #'     (Required if not providing mut_data nor mut_data_matrix)
 #'     Single cell copy number segments data. Note that every single cell id
@@ -916,7 +918,12 @@ cellscape <- function(cnv_data = NULL,
 #' @export
 #' @rdname helpers
 #' @examples
-#' dfs_tree(data.frame(source = c("1", "1", "2", "2", "5", "6"), target = c("2", "5", "3", "4", "6", "7")), "1", c())
+#' dfs_tree(
+#'   data.frame(
+#'     source = c("1", "1", "2", "2", "5", "6"),
+#'     target = c("2", "5", "3", "4", "6", "7")
+#'   ), "1", c()
+#' )
 dfs_tree <- function(edges, cur_root, dfs_arr) {
   if (!is.null(cur_root)) {
     # add this root to the dfs list of nodes
@@ -1329,7 +1336,7 @@ processUserData <- function(clonal_prev,
   perturbations <- checkPerts(perturbations)
 
   # MUTATIONS DATA
-  mut_data <- getMutationsData(mutations, tree_edges, clonal_prev)
+  mut_data <- getMutationsData(mutations, tree_edges, clonal_prev, show_warnings)
   mutation_info <- mut_data$mutation_info
   mutation_prevalences <- mut_data$mutation_prevalences
   if (is.data.frame(mutations)) {
@@ -1410,12 +1417,26 @@ checkMinDims <- function(mutations, height, width) {
 #' @param tree_edges -- tree_edges provided by user
 #' @examples
 #' checkRequiredInputs(
-#'   data.frame(timepoint = c(rep("Diagnosis", 6), rep("Relapse", 1)), clone_id = c("1", "2", "3", "4", "5", "6", "7"), clonal_prev = c("0.1", "0.22", "0.08", "0.53", "0.009", "0.061", "1")),
-#'   data.frame(source = c("1", "1", "2", "2", "5", "6"), target = c("2", "5", "3", "4", "6", "7"))
+#'   data.frame(
+#'     timepoint = c(rep("Diagnosis", 6), rep("Relapse", 1)),
+#'     clone_id = c("1", "2", "3", "4", "5", "6", "7"),
+#'     clonal_prev = c("0.1", "0.22", "0.08", "0.53", "0.009", "0.061", "1")
+#'   ),
+#'   data.frame(
+#'     source = c("1", "1", "2", "2", "5", "6"),
+#'     target = c("2", "5", "3", "4", "6", "7")
+#'   )
 #' )
 #' checkRequiredInputs(
-#'   data.frame(timepoint = c(rep("Diagnosis", 6), rep("Relapse", 1)), clone_id = c("1", "2", "3", "4", "5", "6", "7"), clonal_prev = c("0.12", "0.12", "0.18", "0.13", "0.009", "0.061", "1")),
-#'   data.frame(source = c("1", "1", "2", "2", "5", "6"), target = c("2", "5", "3", "4", "6", "7"))
+#'   data.frame(
+#'     timepoint = c(rep("Diagnosis", 6), rep("Relapse", 1)),
+#'     clone_id = c("1", "2", "3", "4", "5", "6", "7"),
+#'     clonal_prev = c("0.12", "0.12", "0.18", "0.13", "0.009", "0.061", "1")
+#'   ),
+#'   data.frame(
+#'     source = c("1", "1", "2", "2", "5", "6"),
+#'     target = c("2", "5", "3", "4", "6", "7")
+#'   )
 #' )
 #' @export
 #' @rdname helpers
@@ -1476,7 +1497,12 @@ checkClonalPrev <- function(clonal_prev) {
 #'
 #' @param tree_edges -- tree edges provided by user
 #' @examples
-#' checkTreeEdges(data.frame(source = c("1", "1", "2", "2", "5", "6"), target = c("2", "5", "3", "4", "6", "7")))
+#' checkTreeEdges(
+#'   data.frame(
+#'     source = c("1", "1", "2", "2", "5", "6"),
+#'     target = c("2", "5", "3", "4", "6", "7")
+#'   )
+#' )
 #' @export
 #' @rdname helpers
 checkTreeEdges <- function(tree_edges) {
@@ -1540,7 +1566,12 @@ checkGtypePositioning <- function(genotype_position) {
 #'
 #' @param clone_colours -- clone_colours provided by user
 #' @examples
-#' checkCloneColours(data.frame(clone_id = c("1", "2", "3", "4"), colour = c("#beaed4", "#fdc086", "#beaed4", "#beaed4")))
+#' checkCloneColours(
+#'   data.frame(
+#'     clone_id = c("1", "2", "3", "4"),
+#'     colour = c("#beaed4", "#fdc086", "#beaed4", "#beaed4")
+#'   )
+#' )
 #' @export
 #' @rdname helpers
 checkCloneColours <- function(clone_colours) {
@@ -1589,13 +1620,23 @@ checkPerts <- function(perturbations) {
 #' @param clonal_prev -- clonal prevalence data from user
 #' @examples
 #' getMutationsData(
-#'   data.frame(chrom = c("11"), coord = c(104043), VAF = c(0.1), clone_id = c(1), timepoint = c("Relapse")),
-#'   data.frame(source = c("1", "1", "2", "2", "5", "6"), target = c("2", "5", "3", "4", "6", "7")),
-#'   data.frame(timepoint = c(rep("Diagnosis", 6), rep("Relapse", 1)), clone_id = c("1", "2", "3", "4", "5", "6", "7"), clonal_prev = c("0.12", "0.12", "0.18", "0.13", "0.009", "0.061", "1"))
+#'   data.frame(
+#'     chrom = c("11"), coord = c(104043), VAF = c(0.1),
+#'     clone_id = c(1), timepoint = c("Relapse")
+#'   ),
+#'   data.frame(
+#'     source = c("1", "1", "2", "2", "5", "6"),
+#'     target = c("2", "5", "3", "4", "6", "7")
+#'   ),
+#'   data.frame(
+#'     timepoint = c(rep("Diagnosis", 6), rep("Relapse", 1)),
+#'     clone_id = c("1", "2", "3", "4", "5", "6", "7"),
+#'     clonal_prev = c("0.12", "0.12", "0.18", "0.13", "0.009", "0.061", "1")
+#'   )
 #' )
 #' @export
 #' @rdname helpers
-getMutationsData <- function(mutations, tree_edges, clonal_prev) {
+getMutationsData <- function(mutations, tree_edges, clonal_prev, show_warnings = TRUE) {
   if (is.data.frame(mutations)) {
     # ensure column names are correct
     if (!("chrom" %in% colnames(mutations)) ||
@@ -1712,11 +1753,27 @@ getMutationsData <- function(mutations, tree_edges, clonal_prev) {
 #' @rdname helpers
 #' @examples
 #' replaceSpaces(
-#'   mutations = data.frame(chrom = c("11"), coord = c(104043), VAF = c(0.1), clone_id = c(1), timepoint = c("Relapse")),
-#'   tree_edges = data.frame(source = c("1", "1", "2", "2", "5", "6"), target = c("2", "5", "3", "4", "6", "7")),
-#'   clonal_prev = data.frame(timepoint = c(rep("Diagnosis", 6), rep("Relapse", 1)), clone_id = c("1", "2", "3", "4", "5", "6", "7"), clonal_prev = c("0.12", "0.12", "0.18", "0.13", "0.009", "0.061", "1")),
-#'   mutation_prevalences = list("X:6154028" = data.frame(timepoint = c("Diagnosis"), VAF = c(0.5557))), mutation_info = data.frame(clone_id = c(1)),
-#'   clone_colours = data.frame(clone_id = c("1", "2", "3", "4"), colour = c("#beaed4", "#fdc086", "#beaed4", "#beaed4"))
+#'   mutations = data.frame(
+#'     chrom = c("11"), coord = c(104043),
+#'     VAF = c(0.1), clone_id = c(1), timepoint = c("Relapse")
+#'   ),
+#'   tree_edges = data.frame(
+#'     source = c("1", "1", "2", "2", "5", "6"),
+#'     target = c("2", "5", "3", "4", "6", "7")
+#'   ),
+#'   clonal_prev = data.frame(
+#'     timepoint = c(rep("Diagnosis", 6), rep("Relapse", 1)),
+#'     clone_id = c("1", "2", "3", "4", "5", "6", "7"),
+#'     clonal_prev = c("0.12", "0.12", "0.18", "0.13", "0.009", "0.061", "1")
+#'   ),
+#'   mutation_prevalences = list(
+#'     "X:6154028" = data.frame(timepoint = c("Diagnosis"), VAF = c(0.5557))
+#'   ),
+#'   mutation_info = data.frame(clone_id = c(1)),
+#'   clone_colours = data.frame(
+#'     clone_id = c("1", "2", "3", "4"),
+#'     colour = c("#beaed4", "#fdc086", "#beaed4", "#beaed4")
+#'   )
 #' )
 replaceSpaces <- function(clonal_prev, tree_edges, clone_colours, mutation_info, mutations, mutation_prevalences) {
   # create map of original sample ids to space-replaced sample ids
