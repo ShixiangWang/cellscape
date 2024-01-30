@@ -16,19 +16,22 @@ tumour heterogeneity.
 To install CellScape, type the following commands in R:
 
 ``` r
-# try http:// if https:// URLs are not supported
+# Bioc release version
 if (!requireNamespace("BiocManager", quietly = TRUE)) {
   install.packages("BiocManager")
 }
 BiocManager::install("cellscape")
+
+# GitHub devel version
+BiocManager::install("ShixiangWang/cellscape")
 ```
 
 ## Examples
 
-Run the examples by:
+Check the examples by:
 
 ``` r
-example("cellscape")
+?cellscape
 ```
 
 ## Documentation
